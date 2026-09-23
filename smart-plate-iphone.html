@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Plate</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #dff7e8, #eaf4ff);
+    color: #24332b;
+}
+
+.app {
+    max-width: 480px;
+    margin: auto;
+    min-height: 100vh;
+    padding: 18px;
+}
+
+.header {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.logo {
+    font-size: 55px;
+}
+
+.header h1 {
+    margin: 5px 0;
+    font-size: 30px;
+}
+
+.header p {
+    color: #607067;
+}
+
+.card {
+    background: white;
+    border-radius: 22px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+label {
+    display: block;
+    margin-top: 13px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #dce8df;
+    border-radius: 13px;
+    font-size: 16px;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #35b96b;
+}
+
+button {
+    width: 100%;
+    border: none;
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 18px;
+    background: linear-gradient(135deg, #35b96b, #159957);
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.result {
+    display: none;
+}
+
+.status {
+    padding: 15px;
+    border-radius: 14px;
+    background: #eef8f1;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.macro-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.macro {
+    text-align: center;
+    padding: 13px 5px;
+    border-radius: 15px;
+    background: #f4f8f5;
+}
+
+.macro .icon {
+    font-size: 25px;
+}
+
+.macro strong {
+    display: block;
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+.macro small {
+    color: #68766e;
+}
+
+.food-title {
+    margin-top: 5px;
+}
+
+.food {
+    border-radius: 18px;
+    padding: 16px;
+    margin: 10px 0;
+    background: #f8fbf9;
+    border: 1px solid #e4eee7;
+}
+
+.food-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.food-items {
+    color: #647269;
+    margin: 7px 0 12px;
+    line-height: 1.4;
+}
+
+.nutrition {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+.nutrition div {
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+    padding: 8px 3px;
+    font-size: 11px;
+}
+
+.nutrition strong {
+    display: block;
+    font-size: 14px;
+}
+
+.note {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #65736b;
+    margin-top: 15px;
+}
+
+.gender-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.gender-option {
+    position: relative;
+}
+
+.gender-option input {
+    display: none;
+}
+
+.gender-label {
+    display: block;
+    text-align: center;
+    padding: 15px 5px;
+    border: 2px solid #dce8df;
+    border-radius: 14px;
+    cursor: pointer;
+    background: #fafdfb;
+}
+
+.gender-option input:checked + .gender-label {
+    border-color: #35b96b;
+    background: #eaf8ef;
+    color: #159957;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    padding: 15px;
+    color: #7a8780;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="header">
+        <div class="logo">🥗</div>
+
+        <h1>Smart Plate</h1>
+
+        <p>
+            Дұрыс тамақтануға арналған ақылды көмекші
+        </p>
+    </div>
+
+
+    <!-- INPUT CARD -->
+
+    <div class="card">
+
+        <h2>👤 Өзіңіз туралы</h2>
+
+
+        <label>Жасыңыз</label>
+
+        <input
+            id="age"
+            type="number"
+            min="1"
+            max="120"
+            placeholder="Мысалы: 25"
+        >
+
+
+        <label>Жынысыңыз</label>
+
+        <div class="gender-box">
+
+            <div class="gender-option">
+
+                <input
+                    type="radio"
+                    name="gender"
+                    id="male"
+                    value="male"
+                    checked
+                >
+
+                <label
+                    for="male"
+                    class="gender-label"
+                >
+                    👨 Ер адам
+                </label>
+
+            </div>
+
+
+            <div class="gender-option">
+
+                <input
+                    type="radio"
+                    name="gender"
+                    id="female"
+                    value="female"
+                >
+
+                <label
+                    for="female"
+                    class="gender-label"
+                >
+                    👩 Әйел
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <label>Бойыңыз (см)</label>
+
+        <input
+            id="height"
+            type="number"
+            min="50"
+            max="250"
+            placeholder="Мысалы: 175"
+        >
+
+
+        <label>Салмағыңыз (кг)</label>
+
+        <input
+            id="weight"
+            type="number"
+            min="10"
+            max="300"
+            placeholder="Мысалы: 70"
+        >
+
+
+        <label>Белсенділік деңгейі</label>
+
+        <select id="activity">
+
+            <option value="low">
+                🛋️ Төмен
+            </option>
+
+            <option value="medium">
+                🚶 Орташа
+            </option>
+
+            <option value="high">
+                🏃 Жоғары
+            </option>
+
+        </select>
+
+
+        <button type="button" id="recommendBtn">
+            ✨ Маған тағам ұсыну
+        </button>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div
+        id="result"
+        class="result"
+    >
+
+        <div class="card">
+
+            <h2>📊 Сіздің нәтижелеріңіз</h2>
+
+            <div
+                id="status"
+                class="status"
+            ></div>
+
+
+            <!-- ADULT MACROS -->
+
+            <div
+                id="adultMacros"
+                style="display:none"
+            >
+
+                <h3>
+                    🥗 Тәуліктік макронутриенттер
+                </h3>
+
+
+                <div class="macro-box">
+
+                    <div class="macro">
+
+                        <div class="icon">
+                            🥩
+                        </div>
+
+                        <strong id="protein">
+                            —
+                        </strong>
+
+                        <small>
+                            Ақуыз
+                        </small>
+
+                    </div>
+
+
+                    <div class="macro">
+
+                        <div class="icon">
+                            🥑
+                        </div>
+
+                        <strong id="fat">
+                            —
+                        </strong>
+
+                        <small>
+                            Май
+                        </small>
+
+                    </div>
+
+
+                    <div class="macro">
+
+                        <div class="icon">
+                            🍚
+                        </div>
+
+                        <strong id="carbs">
+                            —
+                        </strong>
+
+                        <small>
+                            Көмірсу
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CHILD INFO -->
+
+            <div
+                id="childInfo"
+                style="display:none"
+            >
+
+                <div class="status">
+
+                    🌱 <b>Өсу кезеңі</b>
+
+                    <br><br>
+
+                    18 жасқа дейін ағза әлі өсіп,
+                    дамып жатқандықтан, қосымша
+                    салмақ азайтуға арналған мақсат
+                    қоймайды.
+
+                    <br><br>
+
+                    Оның орнына теңгерімді және
+                    әртүрлі тағамдар ұсынылады.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOD -->
+
+        <div class="card">
+
+            <h2 class="food-title">
+                🍽️ Сізге ұсынылатын тағамдар
+            </h2>
+
+            <div id="foods"></div>
+
+            <p class="note">
+                * Көрсетілген мәндер тағамның шамамен
+                қоректік құндылығы. Нақты мән өнімнің
+                мөлшері мен дайындалуына байланысты өзгереді.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        Smart Plate • Nutrition Helper
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   FOOD DATABASE
+========================= */
+
+const foods = [
+
+    {
+        name: "🍗 Тауық + күріш + салат",
+
+        items:
+        "Тауық еті, күріш, қияр-қызанақ салаты",
+
+        kcal: 560,
+
+        protein: 39,
+
+        fat: 16,
+
+        carbs: 62
+    },
+
+
+    {
+        name: "🥩 Сиыр еті + қарақұмық",
+
+        items:
+        "Сиыр еті, қарақұмық, көкөністер",
+
+        kcal: 600,
+
+        protein: 38,
+
+        fat: 22,
+
+        carbs: 60
+    },
+
+
+    {
+        name: "🐟 Балық + картоп + көкөніс",
+
+        items:
+        "Балық, картоп, брокколи және сәбіз",
+
+        kcal: 510,
+
+        protein: 35,
+
+        fat: 16,
+
+        carbs: 55
+    },
+
+
+    {
+        name: "🍗 Тауық + қарақұмық + салат",
+
+        items:
+        "Тауық еті, қарақұмық, көкөніс салаты",
+
+        kcal: 530,
+
+        protein: 41,
+
+        fat: 14,
+
+        carbs: 55
+    },
+
+
+    {
+        name: "🫘 Бұршақ + күріш + көкөніс",
+
+        items:
+        "Бұршақ, күріш, қызанақ және қияр",
+
+        kcal: 480,
+
+        protein: 19,
+
+        fat: 8,
+
+        carbs: 78
+    },
+
+
+    {
+        name: "🥣 Сұлы + банан + жұмыртқа",
+
+        items:
+        "Сұлы ботқасы, банан, жұмыртқа",
+
+        kcal: 430,
+
+        protein: 19,
+
+        fat: 14,
+
+        carbs: 57
+    }
+
+];
+
+
+
+/* =========================
+   CALCULATE
+========================= */
+
+function calculate() {
+
+    const age =
+        Number(
+            document.getElementById("age").value
+        );
+
+    const height =
+        Number(
+            document.getElementById("height").value
+        );
+
+    const weight =
+        Number(
+            document.getElementById("weight").value
+        );
+
+    const activity =
+        document.getElementById("activity").value;
+
+
+    const gender =
+        document.querySelector(
+            'input[name="gender"]:checked'
+        ).value;
+
+
+    /* Проверка */
+
+    if (!age || !height || !weight) {
+
+        alert(
+            "Жасыңызды, бойыңызды және салмағыңызды енгізіңіз."
+        );
+
+        return;
+    }
+
+
+    if (age < 1 || age > 120) {
+
+        alert(
+            "Жасты 1-120 аралығында енгізіңіз."
+        );
+
+        return;
+    }
+
+
+    document.getElementById(
+        "result"
+    ).style.display = "block";
+
+
+    const status =
+        document.getElementById("status");
+
+    const adultMacros =
+        document.getElementById("adultMacros");
+
+    const childInfo =
+        document.getElementById("childInfo");
+
+
+    /* =========================
+       UNDER 18
+    ========================= */
+
+    if (age < 18) {
+
+        adultMacros.style.display =
+            "none";
+
+        childInfo.style.display =
+            "block";
+
+
+        status.innerHTML =
+
+            "👤 <b>" +
+
+            (gender === "male"
+                ? "Ер адам"
+                : "Әйел") +
+
+            "</b><br>" +
+
+            "🎂 Жасы: " +
+            age +
+            " жас<br>" +
+
+            "📏 Бойы: " +
+            height +
+            " см<br>" +
+
+            "⚖️ Салмағы: " +
+            weight +
+            " кг<br><br>" +
+
+            "🥗 Сізге теңгерімді тағамдар ұсынылады.";
+
+
+    }
+
+    /* =========================
+       18+
+    ========================= */
+
+    else {
+
+        adultMacros.style.display =
+            "block";
+
+        childInfo.style.display =
+            "none";
+
+
+        /*
+          Жынысқа байланысты
+          жалпы ақпараттық коэффициент.
+        */
+
+        let proteinFactor;
+
+
+        if (gender === "male") {
+
+            if (activity === "low")
+                proteinFactor = 1.0;
+
+            else if (activity === "medium")
+                proteinFactor = 1.1;
+
+            else
+                proteinFactor = 1.2;
+
+        }
+
+        else {
+
+            if (activity === "low")
+                proteinFactor = 0.9;
+
+            else if (activity === "medium")
+                proteinFactor = 1.0;
+
+            else
+                proteinFactor = 1.1;
+
+        }
+
+
+        const protein =
+            Math.round(
+                weight * proteinFactor
+            );
+
+
+        const fatMin =
+            Math.round(
+                weight * 0.8
+            );
+
+        const fatMax =
+            Math.round(
+                weight * 1.0
+            );
+
+
+        const carbMin =
+            Math.round(
+                weight * 3
+            );
+
+        const carbMax =
+            Math.round(
+                weight * 5
+            );
+
+
+        document.getElementById(
+            "protein"
+        ).innerText =
+            protein + " г";
+
+
+        document.getElementById(
+            "fat"
+        ).innerText =
+            fatMin +
+            "-" +
+            fatMax +
+            " г";
+
+
+        document.getElementById(
+            "carbs"
+        ).innerText =
+            carbMin +
+            "-" +
+            carbMax +
+            " г";
+
+
+        status.innerHTML =
+
+            "👤 <b>" +
+
+            (gender === "male"
+                ? "Ер адам"
+                : "Әйел") +
+
+            "</b><br>" +
+
+            "🎂 Жасы: " +
+            age +
+            " жас<br>" +
+
+            "📏 Бойы: " +
+            height +
+            " см<br>" +
+
+            "⚖️ Салмағы: " +
+            weight +
+            " кг<br>" +
+
+            "🏃 Белсенділік: " +
+
+            getActivityName(activity);
+
+    }
+
+
+    /* FOOD */
+
+    showFoods(
+        age,
+        gender,
+        activity
+    );
+
+
+    /* Scroll */
+
+    setTimeout(() => {
+
+        document.getElementById(
+            "result"
+        ).scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }, 100);
+
+}
+
+
+
+/* =========================
+   ACTIVITY NAME
+========================= */
+
+function getActivityName(activity) {
+
+    if (activity === "low")
+        return "Төмен";
+
+    if (activity === "medium")
+        return "Орташа";
+
+    return "Жоғары";
+}
+
+
+
+/* =========================
+   FOOD RECOMMENDATION
+========================= */
+
+function showFoods(
+    age,
+    gender,
+    activity
+) {
+
+    const container =
+        document.getElementById("foods");
+
+
+    let selected = [];
+
+
+    /*
+       Әйел/ер және белсенділікке
+       қарай тағамдарды араластырып ұсынамыз.
+    */
+
+    if (age < 18) {
+
+        selected = [
+            foods[0],
+            foods[2],
+            foods[5]
+        ];
+
+    }
+
+    else if (
+        gender === "male" &&
+        activity === "high"
+    ) {
+
+        selected = [
+            foods[0],
+            foods[1],
+            foods[2],
+            foods[3]
+        ];
+
+    }
+
+    else if (
+        gender === "female" &&
+        activity === "high"
+    ) {
+
+        selected = [
+            foods[0],
+            foods[2],
+            foods[3]
+        ];
+
+    }
+
+    else if (
+        activity === "medium"
+    ) {
+
+        selected = [
+            foods[0],
+            foods[3],
+            foods[4]
+        ];
+
+    }
+
+    else {
+
+        selected = [
+            foods[2],
+            foods[4],
+            foods[5]
+        ];
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    selected.forEach(food => {
+
+        container.innerHTML += `
+
+        <div class="food">
+
+            <div class="food-name">
+                ${food.name}
+            </div>
+
+            <div class="food-items">
+                ${food.items}
+            </div>
+
+            <div class="nutrition">
+
+                <div>
+                    🔥
+                    <strong>
+                        ${food.kcal}
+                    </strong>
+                    ккал
+                </div>
+
+                <div>
+                    🥩
+                    <strong>
+                        ${food.protein}г
+                    </strong>
+                    ақуыз
+                </div>
+
+                <div>
+                    🥑
+                    <strong>
+                        ${food.fat}г
+                    </strong>
+                    май
+                </div>
+
+                <div>
+                    🍚
+                    <strong>
+                        ${food.carbs}г
+                    </strong>
+                    көмірсу
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+// iPhone/Safari-friendly event binding
+(function () {
+    function bindButton() {
+        var btn = document.getElementById("recommendBtn");
+        if (!btn) return;
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            calculate();
+        }, false);
+        btn.addEventListener("touchend", function (e) {
+            e.preventDefault();
+            calculate();
+        }, false);
+    }
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", bindButton);
+    } else {
+        bindButton();
+    }
+})();
+</script>
+
+</body>
+</html>
